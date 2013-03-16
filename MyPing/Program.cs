@@ -15,12 +15,16 @@ namespace MyPing
         {
             Arguments commandLine = new Arguments(args);
             string host = args.Last<string>();
-            int count = 4;
+            int sentCount = 4;
             int timeout = 1000;
             short ttl = 128;
             bool infinite = false;
             ushort buffersize = 32;
             bool enableFragment = false;
+            int notRecievedAnswersCount = 0;
+            List<TimeSpan> latencies = new List<TimeSpan>();
+
+            IPMessage recievedMessage;
 
             if (args == null || commandLine["?"] != null)
             {
@@ -29,7 +33,7 @@ namespace MyPing
             }
 
             if (commandLine["n"] != null)
-                if (!int.TryParse(commandLine["n"], out count))
+                if (!int.TryParse(commandLine["n"], out sentCount))
                 {
                     PrintError("Invalid argument for option -n");
                     return 1;
@@ -93,19 +97,30 @@ namespace MyPing
 
                 using (IcmpClient client = new IcmpClient(hostIP))
                 {
-                    TimeSpan time;
-                    while (infinite || count > 0)
+                    TimeSpan latency;
+                    int remainedCount = sentCount;
+                    while (infinite || remainedCount > 0)
                     {
                         try
                         {
-                            time = client.Ping(timeout, buffersize, !enableFragment, ttl);
-                            if (time.Equals(TimeSpan.MaxValue)) Console.WriteLine("Request timed out.");
-                            else Console.WriteLine("Reply from {0}: bytes={1} time={2} ms",
-                                hostIP, buffersize, Math.Round(time.TotalMilliseconds));
-
-                            if (time.TotalMilliseconds < 1000)
+                            latency = client.Ping(timeout, buffersize, !enableFragment, ttl, out recievedMessage);
+                            if (latency.Equals(TimeSpan.MaxValue))
                             {
-                                System.Threading.Thread.Sleep(1000 - (int)time.TotalMilliseconds);
+                                notRecievedAnswersCount++;
+                                Console.WriteLine("Request timed out.");
+                            }
+                            else
+                                latencies.Add(latency);
+                                Console.WriteLine("Reply from {0}: bytes={1}, time={2} ms, TTL={3}",
+                                    recievedMessage.SourceAddress,
+                                    recievedMessage.IcmpMessageSize,
+                                    Math.Round(latency.TotalMilliseconds),
+                                    recievedMessage.Ttl);
+
+                            // If latency is less than 1 second then wait until it passes.
+                            if (latency.TotalMilliseconds < 1000)
+                            {
+                                System.Threading.Thread.Sleep(1000 - (int)latency.TotalMilliseconds);
                             }
                         }
                         catch (Exception e)
@@ -113,7 +128,7 @@ namespace MyPing
                             Console.WriteLine("Network error: " + e.Message);
                             Debug.WriteLine(e.ToString());
                         }
-                        if (!infinite) count--;
+                        if (!infinite) remainedCount--;
                     }
                 }
             }
@@ -122,14 +137,8 @@ namespace MyPing
                 Console.WriteLine("Error while pinging the specified host.");
             }
 
-            Console.WriteLine("Test: -n: {0}, -t: {1}, -l: {2}, -w: {3}, -i: {4}, -f: {5}",
-                count.ToString(), infinite.ToString(), buffersize.ToString(), timeout.ToString(),
-                ttl.ToString(), enableFragment.ToString());
-
-            Console.WriteLine("Hostname: " + args.Last<string>());
-
+            PrintStatistics(hostIP, sentCount, notRecievedAnswersCount, latencies);
             Console.ReadLine();
-
             return 0;
         }
 
@@ -138,6 +147,18 @@ namespace MyPing
         {
             Console.WriteLine("\r\n" + error + "\r\n");
             PrintHelp();
+        }
+
+        static void PrintStatistics(IPAddress host, int totalCount, int notRecieved, List<TimeSpan> latencies)
+        {
+            Console.WriteLine("\r\nStatistics ping for {0}:\n\tPackets: sent = {1}, recieved = {2}, lost = {3}", 
+                host, totalCount, totalCount - notRecieved, notRecieved);
+            Console.WriteLine("\t({0}% lost)", Math.Round((double)notRecieved / totalCount * 100));
+            Console.WriteLine("Approximate time:");
+            Console.WriteLine("\tMinimal = {0} ms, Maximal = {1} ms, Average = {2} ms",
+                latencies.Min<TimeSpan>().Milliseconds, 
+                latencies.Max<TimeSpan>().Milliseconds, 
+                latencies.Average<TimeSpan>(timeSpan => timeSpan.Milliseconds));
         }
 
         // Print the help in the console

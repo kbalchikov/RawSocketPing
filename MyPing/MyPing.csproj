@@ -42,12 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="Icmp.cs" />
     <Compile Include="IcmpClient.cs" />
     <Compile Include="IcmpMessage.cs" />
+    <Compile Include="IPMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

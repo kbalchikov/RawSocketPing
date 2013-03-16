@@ -13,58 +13,19 @@ namespace MyPing
         public IPAddress Host { get; set; }
         public Socket Client { get; set; }
 
-        //public int Timeout
-        //{
-        //    get { return timeout; }
-        //    set { timeout = value; }
-        //}
-
-        //public ushort BufferSize
-        //{
-        //    get { return bufferSize; }
-        //    set
-        //    {
-        //        bufferSize = value;
-        //        icmpMessage.Data = new byte[bufferSize];
-        //        for (int i = 0; i < bufferSize; i++)
-        //            icmpMessage.Data[i] = 32;
-        //    }
-        //}
-
-        //public bool DontFramgent
-        //{
-        //    get { return dontFragment; }
-        //    set { dontFragment = Client.DontFragment = value; }
-        //}
-
-        //public short Ttl
-        //{
-        //    get { return ttl; }
-        //    set { ttl = Client.Ttl = value; }
-        //}
-
-        //private int timeout;
-        //private ushort bufferSize;
-        //private bool dontFragment;
-        //private short ttl;
-
         private IcmpMessage icmpMessage;
         private Timer pingTimeOut;
         private bool hasTimedOut;
-        private int port;
 
         public IcmpClient(IPAddress host)
         {
             this.Host = host;
         }
 
-        public IcmpClient(string hostname, int port)
+        public IcmpClient(string hostname)
         {
             this.Host = Dns.GetHostAddresses(hostname)[0];
-            this.port = port;
         }
-
-        public IcmpClient(string hostname) : this(hostname, 0) { }
 
         private byte[] GetEchoMessage(ushort bufferSize)
         {
@@ -79,24 +40,25 @@ namespace MyPing
             return icmpMessage.GetEchoMessageBytes();
         }
 
-        public TimeSpan Ping()
+        public TimeSpan Ping(out IPMessage ipMessage)
         {
-            return Ping(timeout: 1000, bufferSize: 32, dontFragment: true, ttl: 128);
+            return Ping(timeout: 1000, bufferSize: 32, dontFragment: true, ttl: 128, ipMessage: out ipMessage);
         }
 
-        public TimeSpan Ping(int timeout)
+        public TimeSpan Ping(int timeout, out IPMessage ipMessage)
         {
-            return Ping(timeout: timeout, bufferSize: 32, dontFragment: true, ttl: 128);
+            return Ping(timeout: timeout, bufferSize: 32, dontFragment: true, ttl: 128, ipMessage: out ipMessage);
         }
 
-        public TimeSpan Ping(int timeout, ushort bufferSize, bool dontFragment, short ttl)
+        public TimeSpan Ping(int timeout, ushort bufferSize, bool dontFragment, short ttl, out IPMessage ipMessage)
         {
+            ipMessage = new IPMessage();
             TimeSpan latency;
-            EndPoint endPoint = new IPEndPoint(Host, port);
+            EndPoint endPoint = new IPEndPoint(Host, 0);
 
             Client = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp);
             // Getting message to send
-            byte[] message = GetEchoMessage(32);            
+            byte[] message = GetEchoMessage(bufferSize);            
             // Setting fragmentation
             Client.DontFragment = dontFragment;
             // Setting TTL
@@ -136,6 +98,7 @@ namespace MyPing
             }
 
             latency = DateTime.Now.Subtract(startTime);
+            ipMessage.ReadFromByteBuffer(message);
             return latency;
         }
 
