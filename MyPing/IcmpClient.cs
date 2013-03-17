@@ -76,9 +76,10 @@ namespace MyPing
             {
                 if (Client.SendTo(message, endPoint) <= 0)
                     throw new SocketException();
-                message = new byte[message.Length + 20];
-                if (Client.ReceiveFrom(message, ref endPoint) <= 0)
-                    throw new SocketException();
+                message = new byte[message.Length + 100];
+                //if (Client.ReceiveFrom(message, ref endPoint) <= 0)
+                //    throw new SocketException();
+                Client.ReceiveFrom(message, ref endPoint);
                 
             }
             catch (SocketException e)
@@ -88,13 +89,16 @@ namespace MyPing
             }
             finally
             {
-                Client.Close();
-                Client = null;
                 pingTimeOut.Change(
                     System.Threading.Timeout.Infinite, 
                     System.Threading.Timeout.Infinite);
                 pingTimeOut.Dispose();
                 pingTimeOut = null;
+                if (Client != null)
+                {
+                    Client.Close();
+                    Client = null; 
+                }
             }
 
             latency = DateTime.Now.Subtract(startTime);
@@ -105,7 +109,11 @@ namespace MyPing
         private void OnPingTimedOut(object state)
         {
             hasTimedOut = true;
-            if (Client != null) Client.Close();
+            if (Client != null)
+            {
+                Client.Close();
+                Client = null;
+            }
         }
 
         void IDisposable.Dispose()

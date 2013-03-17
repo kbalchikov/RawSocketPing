@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define DEBUG
+#undef DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +17,7 @@ namespace MyPing
         static int Main(string[] args)
         {
             Arguments commandLine = new Arguments(args);
-            string host = args.Last<string>();
+            string host;
             int sentCount = 4;
             int timeout = 1000;
             short ttl = 128;
@@ -26,11 +29,16 @@ namespace MyPing
 
             IPMessage recievedMessage;
 
-            if (args == null || commandLine["?"] != null)
+            if (args.Length == 0 || commandLine["?"] != null)
             {
                 PrintHelp();
+                #if DEBUG
+                    Console.ReadLine();
+                #endif
                 return 0;
             }
+
+            host = args.Last<string>();
 
             if (commandLine["n"] != null)
                 if (!int.TryParse(commandLine["n"], out sentCount))
@@ -110,14 +118,16 @@ namespace MyPing
                                 Console.WriteLine("Request timed out.");
                             }
                             else
+                            {
                                 latencies.Add(latency);
                                 Console.WriteLine("Reply from {0}: bytes={1}, time={2} ms, TTL={3}",
                                     recievedMessage.SourceAddress,
                                     recievedMessage.IcmpMessageSize,
                                     Math.Round(latency.TotalMilliseconds),
                                     recievedMessage.Ttl);
+                            }
 
-                            // If latency is less than 1 second then wait until it passes.
+                            //If latency is less than 1 second then wait until it passes.
                             if (latency.TotalMilliseconds < 1000)
                             {
                                 System.Threading.Thread.Sleep(1000 - (int)latency.TotalMilliseconds);
@@ -126,6 +136,7 @@ namespace MyPing
                         catch (Exception e)
                         {
                             Console.WriteLine("Network error: " + e.Message);
+                            //Console.WriteLine(e.ToString());
                             Debug.WriteLine(e.ToString());
                         }
                         if (!infinite) remainedCount--;
@@ -138,7 +149,9 @@ namespace MyPing
             }
 
             PrintStatistics(hostIP, sentCount, notRecievedAnswersCount, latencies);
-            Console.ReadLine();
+            #if DEBUG
+                Console.ReadLine();
+            #endif
             return 0;
         }
 
@@ -154,25 +167,30 @@ namespace MyPing
             Console.WriteLine("\r\nStatistics ping for {0}:\n\tPackets: sent = {1}, recieved = {2}, lost = {3}", 
                 host, totalCount, totalCount - notRecieved, notRecieved);
             Console.WriteLine("\t({0}% lost)", Math.Round((double)notRecieved / totalCount * 100));
-            Console.WriteLine("Approximate time:");
-            Console.WriteLine("\tMinimal = {0} ms, Maximal = {1} ms, Average = {2} ms",
-                latencies.Min<TimeSpan>().Milliseconds, 
-                latencies.Max<TimeSpan>().Milliseconds, 
-                latencies.Average<TimeSpan>(timeSpan => timeSpan.Milliseconds));
+            // Print time data only if at least one answer was recieved
+            if (latencies.Count > 0)
+            {
+                Console.WriteLine("Approximate time:");
+                Console.WriteLine("\tMinimal = {0} ms, Maximal = {1} ms, Average = {2} ms",
+                        latencies.Min<TimeSpan>().Milliseconds,
+                        latencies.Max<TimeSpan>().Milliseconds,
+                        latencies.Average<TimeSpan>(timeSpan => timeSpan.Milliseconds)); 
+            }
         }
 
         // Print the help in the console
         static void PrintHelp()
         {
-            Console.WriteLine("\r\nUsage: myping [-t] [-n count] [-w timeout]\r\n" +
+            Console.WriteLine(
+                "\r\nUsage: myping [-t] [-n <count>] [-w <timeout>] [-l <size>]\r\n" +
+                "              [-f] [-i <TTL>] <HOST/IP>\r\n" + 
                 "    -t             Ping the specified host until stopped.\r\n" +
                 "    -n <count>     Number of echo requests to send.\r\n" +
-                "    -l <size>      Buffer size of the message to be send" +
-                "    -f             Enable fragment" +
-                "    -i <TTL>       Set the TTL (Time To Live) size manually" +
+                "    -l <size>      Buffer size of the message to be send\n" +
+                "    -f             Enable fragment\n" +
+                "    -i <TTL>       Set the TTL (Time To Live) size manually\n" +
                 "    -w <timeout>   Timeout in milliseconds to wait for each reply.\r\n" +
-                "                   (0 = no timeout)\r\n" +
-                "                   <HOST/IP>\r\n");
+                "                   (0 = no timeout)\r\n");
 
         }
     }

@@ -18,8 +18,7 @@ namespace MyPing
         public byte[] GetBaseHeaderBytes()
         {
             byte[] msg = new byte[4];
-            
-
+            // Fill ICMP Message header with Type, Code and CheckSum
             Array.Copy(
                 sourceArray: BitConverter.GetBytes(Type),
                 sourceIndex: 0,
@@ -68,6 +67,7 @@ namespace MyPing
             return msg;
         }
 
+        // Get Echo message which is used for ping command
         public byte[] GetEchoMessageBytes()
         {
             int length = 8;
