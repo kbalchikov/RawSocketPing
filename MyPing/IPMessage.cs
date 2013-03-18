@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// IPMessage.cs
+// MyPing
+//
+// Created by Konstantin Balchikov on 14.03.2013.
+// Copyright (c) 2013 Konstantin Balchikov. All rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

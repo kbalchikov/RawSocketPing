@@ -1,3 +1,8 @@
+//
+// Arguments.cs
+// MyPing
+//
+
 /*
 * Arguments class: application arguments interpreter
 *
