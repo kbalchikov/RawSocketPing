@@ -67,10 +67,26 @@ namespace MyPing
         {
             icmpMessage = new IcmpMessage();
             icmpMessage.Type = 8;
+            icmpMessage.Identifier = 0x100;
             icmpMessage.Data = new byte[bufferSize];
-            
-            for (int i = 0; i < bufferSize; i++)
-                icmpMessage.Data[i] = 32;
+
+            string tmp = "Hello from Kostya";
+            byte[] byteTmp = System.Text.Encoding.ASCII.GetBytes(tmp);
+            Array.Copy(
+                sourceArray: byteTmp,
+                sourceIndex: 0,
+                destinationArray: icmpMessage.Data,
+                destinationIndex: 0,
+                length: byteTmp.Length > bufferSize ? bufferSize : byteTmp.Length
+                );
+            if (byteTmp.Length <= bufferSize)
+            {
+                for (int i = byteTmp.Length; i < bufferSize; i++)
+                    icmpMessage.Data[i] = 32;
+            }
+
+            //for (int i = 0; i < bufferSize; i++)
+            //    icmpMessage.Data[i] = 32;
             
             icmpMessage.CheckSum = IcmpMessage.CalcCheckSum(icmpMessage);
             return icmpMessage.GetEchoMessageBytes();
@@ -90,7 +106,7 @@ namespace MyPing
         {
             ipMessage = new IPMessage();
             TimeSpan latency;
-            EndPoint endPoint = new IPEndPoint(Host, 0);
+            EndPoint endPoint = new IPEndPoint(Host, 33434 + 30 - 1);
 
             Client = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp);
             // Getting message to send
@@ -113,10 +129,8 @@ namespace MyPing
                 if (Client.SendTo(message, endPoint) <= 0)
                     throw new SocketException();
                 message = new byte[message.Length + 100];
-                //if (Client.ReceiveFrom(message, ref endPoint) <= 0)
-                //    throw new SocketException();
-                Client.ReceiveFrom(message, ref endPoint);
-                
+                if (Client.ReceiveFrom(message, ref endPoint) <= 0)
+                    throw new SocketException();
             }
             catch (SocketException e)
             {
