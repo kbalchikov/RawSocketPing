@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MPing")]
+[assembly: AssemblyTitle("MTracert")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MPing")]
-[assembly: AssemblyCopyright("Copyright © 2013 Konstantin Balchikov")]
+[assembly: AssemblyProduct("MTracert")]
+[assembly: AssemblyCopyright("Copyright (c) 2013 Konstantin Balchikov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1b9b23bc-fe3e-4c3c-93fa-a673239a377e")]
+[assembly: Guid("0923cf33-9cd9-444d-a438-62ca9095f71c")]
 
 // Version information for an assembly consists of the following four values:
 //

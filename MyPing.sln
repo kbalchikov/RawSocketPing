@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPing", "MyPing\MyPing.csproj", "{D197546F-B969-4DF8-9458-F6AD0EC54A88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPing", "MyPing\MPing.csproj", "{D197546F-B969-4DF8-9458-F6AD0EC54A88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meleagre.Network", "Meleagre.Network\Meleagre.Network.csproj", "{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTracert", "MTracert\MTracert.csproj", "{44BC355A-38D7-4873-B61E-7940316FEAF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,14 @@ Global
 		{D197546F-B969-4DF8-9458-F6AD0EC54A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D197546F-B969-4DF8-9458-F6AD0EC54A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D197546F-B969-4DF8-9458-F6AD0EC54A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44BC355A-38D7-4873-B61E-7940316FEAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44BC355A-38D7-4873-B61E-7940316FEAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44BC355A-38D7-4873-B61E-7940316FEAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44BC355A-38D7-4873-B61E-7940316FEAF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,18 +12,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommandLine.Utility;
 using System.Net;
 using System.Diagnostics;
+using Meleagre.Network;
+using CommandLine.Utility;
 
-namespace MyPing
+
+namespace MPing
 {
     class Program
     {
         static short ttl = 128;
         static string host;
         static int sentCount = 4;
-        static int timeout = 1000;
+        static int timeout = 5000;
         static bool isInfinite = false;
         static ushort buffersize = 32;
         static bool enableFragment = false;
@@ -100,7 +102,6 @@ namespace MyPing
                         catch (Exception e)
                         {
                             Console.WriteLine("Network error: " + e.Message);
-                            //Console.WriteLine(e.ToString());
                             Debug.WriteLine(e.ToString());
                         }
                         if (!isInfinite) remainedCount--;

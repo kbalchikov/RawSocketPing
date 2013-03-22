@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MPing")]
+[assembly: AssemblyTitle("Meleagre.Network")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MPing")]
+[assembly: AssemblyProduct("Meleagre.Network")]
 [assembly: AssemblyCopyright("Copyright © 2013 Konstantin Balchikov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1b9b23bc-fe3e-4c3c-93fa-a673239a377e")]
+[assembly: Guid("f644fff9-ffe3-4925-85a9-695cac61963f")]
 
 // Version information for an assembly consists of the following four values:
 //
