@@ -1,6 +1,6 @@
 ﻿//
 // IcmpClient.cs
-// MyPing
+// Meleagre.Network
 //
 // Created by The KPD-Team on 15.04.2002.
 // Copyright (c) 2013 2002, The KPD-Team. All rights reserved.
@@ -97,7 +97,8 @@ namespace Meleagre.Network
             }
             
             icmpMessage.CheckSum = IcmpMessage.CalcCheckSum(icmpMessage);
-            return icmpMessage.GetEchoMessageBytes();
+            //return icmpMessage.GetEchoMessageBytes();
+            return icmpMessage.GetMessageBytes();
         }
 
         public TimeSpan Ping(out IPMessage ipMessage)
@@ -148,7 +149,11 @@ namespace Meleagre.Network
             }
             catch (SocketException e)
             {
-                if (hasTimedOut) return TimeSpan.MaxValue;
+                if (hasTimedOut)
+                {
+                    ipMessage = new IPMessage();
+                    return TimeSpan.MaxValue;
+                }
                 else throw e;
             }
             finally
@@ -163,10 +168,8 @@ namespace Meleagre.Network
                     Socket.Close();
                     Socket = null; 
                 }
-                
-                ipMessage = new IPMessage(message);
             }
-
+            ipMessage = new IPMessage(message);
             latency = DateTime.Now.Subtract(startTime);
             return latency;
         }

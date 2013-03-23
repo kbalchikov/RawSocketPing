@@ -1,6 +1,6 @@
 //
 // Arguments.cs
-// MyPing
+// CommandLine.Utility
 //
 
 /*

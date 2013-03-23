@@ -204,7 +204,7 @@ namespace MPing
         static void PrintHelp()
         {
             Console.WriteLine(
-                "\r\nUsage: myping [-t] [-n <count>] [-w <timeout>] [-l <size>]\r\n" +
+                "\r\nUsage: mping [-t] [-n <count>] [-w <timeout>] [-l <size>]\r\n" +
                 "              [-f] [-i <TTL>] <HOST/IP>\r\n" + 
                 "    -t             Ping the specified host until stopped.\r\n" +
                 "    -n <count>     Number of echo requests to send.\r\n" +
