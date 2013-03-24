@@ -118,6 +118,11 @@ namespace Meleagre.Network
             return msg;
         }
 
+        public int DataLength 
+        { 
+            get { return Data.Length; } 
+        }
+
         private byte[] data;
 
         public IcmpMessage()

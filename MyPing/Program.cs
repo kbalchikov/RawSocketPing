@@ -40,7 +40,7 @@ namespace MPing
             commandLine = new Arguments(args);
             latencies = new List<TimeSpan>();
 
-            if (ParseArguments(args) != 0)
+            if (!TryParseArguments(args))
             {
                 // Some error occured during parsing
                 return 1;
@@ -88,7 +88,7 @@ namespace MPing
                                 latencies.Add(latency);
                                 Console.WriteLine("Reply from {0}: bytes={1}, time={2} ms, TTL={3}",
                                     recievedMessage.SourceAddress,
-                                    recievedMessage.IcmpMessageSize,
+                                    recievedMessage.IcmpMessage.DataLength,
                                     Math.Round(latency.TotalMilliseconds),
                                     recievedMessage.Ttl);
                             }
@@ -143,23 +143,23 @@ namespace MPing
             }
         }
 
-        static int ParseArguments(string[] args)
+        static bool TryParseArguments(string[] args)
         {
             // Showing help is there are no parameters of -? (/?) parameter is met
-            if (args.Length == 0 || commandLine["?"] != null)
+            if (args.Length == 0 || args == null || commandLine["?"] != null)
             {
                 PrintHelp();
                 #if DEBUG
                 Console.ReadLine();
                 #endif
-                return 0;
+                return false;
             }
 
             if (commandLine["n"] != null)
                 if (!int.TryParse(commandLine["n"], out sentCount))
                 {
                     PrintError("Invalid argument for option -n");
-                    return 1;
+                    return false;
                 }
 
             if (commandLine["t"] != null)
@@ -170,7 +170,7 @@ namespace MPing
                 if (!ushort.TryParse(commandLine["l"], out buffersize))
                 {
                     PrintError("Invalid argument for option -l");
-                    return 1;
+                    return false;
                 }
             }
 
@@ -179,7 +179,7 @@ namespace MPing
                 if (!int.TryParse(commandLine["w"], out timeout))
                 {
                     PrintError("Invalid argument for option -w");
-                    return 1;
+                    return false;
                 }
             }
 
@@ -188,7 +188,7 @@ namespace MPing
                 if (!short.TryParse(commandLine["i"], out ttl))
                 {
                     PrintError("Invalid argument for option -i");
-                    return 1;
+                    return false;
                 }
             }
 
@@ -197,7 +197,7 @@ namespace MPing
                 enableFragment = true;
             }
 
-            return 0;
+            return true;
         }
 
         // Print the help in the console

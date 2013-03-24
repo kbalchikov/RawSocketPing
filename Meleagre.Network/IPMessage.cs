@@ -56,8 +56,8 @@ namespace Meleagre.Network
 
         public ushort IcmpMessageSize
         {
-            // Retrieve ICMP message size by substracting IP and ICMP header sizes from total size
-            get { return (ushort)(TotalMessageSize - IPHeaderSize - 8); }
+            // Retrieve ICMP message size by substracting IP header size from total size
+            get { return (ushort)(TotalMessageSize - IPHeaderSize); }
         }
 
         public ushort Ttl
