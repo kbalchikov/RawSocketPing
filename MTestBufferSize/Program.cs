@@ -16,15 +16,25 @@ namespace MTestBufferSize
         static int timeout = 3000;
         static int pingAttempts = 1;
         static short ttl = 128;
+        static bool enableFragment = false;
+        static Arguments commandLine;
 
         static int Main(string[] args)
         {
-            if (args.Length != 1)
+            commandLine = new Arguments(args);
+
+            if (args.Length == 0)
             {
                 PrintError("Please, specify one host or IP you'd like to test.");
                 return 1;
             }
-            hostname = args[0];
+
+            if (commandLine["f"] != null)
+            {
+                enableFragment = true;
+            }
+
+            hostname = args.Last();
 
             IPAddress hostIP;
             try
@@ -55,7 +65,7 @@ namespace MTestBufferSize
                     {
                         latency = client.Ping(
                             timeout: timeout, bufferSize: 0,
-                            dontFragment: true, ttl: ttl, ipMessage: out ipMessage);
+                            dontFragment: !enableFragment, ttl: ttl, ipMessage: out ipMessage);
                         // If latency is not <TimeSpan.MaxValue> (which symbolizes request timed out)
                         // or if returned message does not contain "TTL exceeded in transit" error
                         // then we assume this host as available
@@ -74,7 +84,7 @@ namespace MTestBufferSize
                     PrintError("Destination host is unavailable: request timed out.");
                     return 1;
                 }
-                Console.WriteLine("Host is available.");
+                Console.WriteLine("\nHost is available.\n");
 
                 ushort max = ushort.MaxValue, min = 0, mid = 0;
                 while (min < max)
@@ -91,7 +101,7 @@ namespace MTestBufferSize
                         Console.WriteLine("Pinging with \t{0}\t bytes of data : -", mid);
                     }
                 }
-                Console.WriteLine("Max buffer size is: {0}\r\n", mid);
+                Console.WriteLine("\nMax buffer size is: {0} bytes\n", mid);
             }
             return 0;
         }
@@ -107,7 +117,7 @@ namespace MTestBufferSize
                 try
                 {
                     latency = client.Ping(timeout: timeout, bufferSize: s,
-                        dontFragment: false, ttl: ttl, ipMessage: out ipMessage);
+                        dontFragment: !enableFragment, ttl: ttl, ipMessage: out ipMessage);
                     if (latency != TimeSpan.MaxValue && ipMessage.IcmpMessage.Type != 11)
                         return true;
                 }
@@ -118,7 +128,7 @@ namespace MTestBufferSize
 
         static void PrintError(string error)
         {
-            Console.WriteLine(error + "\r\n");
+            Console.WriteLine(error);
         }
     }
 }
