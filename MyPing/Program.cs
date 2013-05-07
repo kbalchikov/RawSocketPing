@@ -137,9 +137,9 @@ namespace MPing
             {
                 Console.WriteLine("Approximate time:");
                 Console.WriteLine("\tMinimal = {0} ms, Maximal = {1} ms, Average = {2} ms",
-                        (int)latencies.Min<TimeSpan>().TotalMilliseconds,
-                        (int)latencies.Max<TimeSpan>().TotalMilliseconds,
-                        (int)latencies.Average<TimeSpan>(timeSpan => timeSpan.TotalMilliseconds)); 
+                        Math.Round(latencies.Min<TimeSpan>().TotalMilliseconds),
+                        Math.Round(latencies.Max<TimeSpan>().TotalMilliseconds),
+                        Math.Round(latencies.Average<TimeSpan>(timeSpan => timeSpan.TotalMilliseconds))); 
             }
         }
 

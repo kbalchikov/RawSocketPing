@@ -8,7 +8,7 @@ using Meleagre.Network;
 using CommandLine.Utility;
 
 
-namespace MTestBufferSize
+namespace MTU
 {
     class Program
     {
@@ -93,15 +93,15 @@ namespace MTestBufferSize
                     if (TryPing(mid, client))
                     {
                         min = (ushort)(mid + 1);
-                        Console.WriteLine("Pinging with \t{0}\t bytes of data : +", mid);
+                        Console.WriteLine("Pinging with \t{0}\t bytes of data : +", mid + 28);
                     }
                     else
                     {
                         max = mid;
-                        Console.WriteLine("Pinging with \t{0}\t bytes of data : -", mid);
+                        Console.WriteLine("Pinging with \t{0}\t bytes of data : -", mid + 28);
                     }
                 }
-                Console.WriteLine("\nMax buffer size is: {0} bytes\n", mid);
+                Console.WriteLine("\nMax buffer size is: {0} bytes\n", mid + 28);
             }
             return 0;
         }

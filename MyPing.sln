@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meleagre.Network", "Meleagr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTracert", "MTracert\MTracert.csproj", "{44BC355A-38D7-4873-B61E-7940316FEAF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTestBufferSize", "MTestBufferSize\MTestBufferSize.csproj", "{7D438DC4-ED9A-45CA-8B9B-B3EB21A3157A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTU", "MTestBufferSize\MTU.csproj", "{7D438DC4-ED9A-45CA-8B9B-B3EB21A3157A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

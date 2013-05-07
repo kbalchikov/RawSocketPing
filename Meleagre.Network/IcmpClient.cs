@@ -143,7 +143,7 @@ namespace Meleagre.Network
             {
                 if (Socket.SendTo(message, endPoint) <= 0)
                     throw new SocketException();
-                message = new byte[message.Length + 100];
+                message = new byte[message.Length + 500];
                 if (Socket.ReceiveFrom(message, ref endPoint) <= 0)
                     throw new SocketException();
             }
