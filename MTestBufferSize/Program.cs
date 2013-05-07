@@ -101,7 +101,7 @@ namespace MTU
                         Console.WriteLine("Pinging with \t{0}\t bytes of data : -", mid + 28);
                     }
                 }
-                Console.WriteLine("\nMax buffer size is: {0} bytes\n", mid + 28);
+                Console.WriteLine("\nMaximum transmission unit is: {0} bytes\n", mid + 28);
             }
             return 0;
         }
