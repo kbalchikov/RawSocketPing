@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPing", "MyPing\MPing.csproj", "{D197546F-B969-4DF8-9458-F6AD0EC54A88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPing", "MPing\MPing.csproj", "{D197546F-B969-4DF8-9458-F6AD0EC54A88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meleagre.Network", "Meleagre.Network\Meleagre.Network.csproj", "{567A6CFF-EC55-4C77-BF4C-D2E55BA532DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTracert", "MTracert\MTracert.csproj", "{44BC355A-38D7-4873-B61E-7940316FEAF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTU", "MTestBufferSize\MTU.csproj", "{7D438DC4-ED9A-45CA-8B9B-B3EB21A3157A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTU", "MTU\MTU.csproj", "{7D438DC4-ED9A-45CA-8B9B-B3EB21A3157A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
